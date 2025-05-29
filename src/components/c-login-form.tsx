@@ -35,7 +35,7 @@ export function LoginForm() {
          .then((response) => {
             console.log("Resposta da API", response.data);
             setTimeout(() => {
-                route.push("/dashboard")
+                route.push("/orders")
             }, 2000);
          }).catch((error) => {
             console.log("Erro na API", error)

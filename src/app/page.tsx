@@ -13,7 +13,6 @@ export default function Page() {
             <LoginForm />
           </CardContent>
         </Card>
-        
     </div>  
   );
 }

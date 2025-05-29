@@ -1,3 +1,4 @@
+import { RegisterForm } from "@/components/c-register-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Register() {
@@ -8,7 +9,7 @@ export default function Register() {
                     <CardTitle className="text-2xl">Cadastre-se</CardTitle>
                     <CardDescription>Cadastre-se para ter acesso a nossa plataforma.</CardDescription>
                     <CardContent>
-                        
+                        <RegisterForm />
                     </CardContent>
                 </CardHeader>
             </Card>

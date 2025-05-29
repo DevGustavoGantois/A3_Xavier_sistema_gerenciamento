@@ -1,7 +1,19 @@
+import { LoginForm } from "@/components/c-login-form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
 export default function Page() {
   return (
-    <div>
-     
-    </div>
+    <div className="mt-20 lg:mt-60 p-8 lg:p-0 max-w-[800px] mx-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Log in</CardTitle>
+            <CardDescription>Preencha os campos abaixo para entrar no nosso sistema de gerenciamento de serviços.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LoginForm />
+          </CardContent>
+        </Card>
+        
+    </div>  
   );
 }

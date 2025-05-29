@@ -1,5 +1,7 @@
 import { RegisterForm } from "@/components/c-register-form";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function Register() {
     return (
@@ -13,6 +15,13 @@ export default function Register() {
                         <RegisterForm />
                     </CardContent>
             </Card>
+            <div className="pt-10 lg:pt-80 flex items-center justify-center">
+          <Button variant="ghost" asChild>
+            <Link href="/">
+            Voltar  
+            </Link>
+          </Button>
+        </div>
         </section>
     )
 }

@@ -3,15 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function Register() {
     return (
-        <section className="mt-40 lg:mt-60 max-w-[900px] mx-auto p-8 lg:p-0">
+        <section className="mt-20 lg:mt-60 max-w-[900px] mx-auto p-8 lg:p-0">
             <Card>
                 <CardHeader>
                     <CardTitle className="text-2xl">Cadastre-se</CardTitle>
                     <CardDescription>Cadastre-se para ter acesso a nossa plataforma.</CardDescription>
-                    <CardContent>
+                </CardHeader>
+                 <CardContent>
                         <RegisterForm />
                     </CardContent>
-                </CardHeader>
             </Card>
         </section>
     )

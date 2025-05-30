@@ -66,7 +66,7 @@ export function LoginForm() {
                         </FormItem>
                     )} />
                     <FormField name="position" control={form.control} render={({field}) => (
-                              <FormItem>
+                              <FormItem className="mt-4">
                                 <FormLabel>Cargo</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                   <FormControl>

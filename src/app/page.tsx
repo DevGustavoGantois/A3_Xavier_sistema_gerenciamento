@@ -15,7 +15,7 @@ export default function Page() {
             <LoginForm />
           </CardContent>
         </Card>
-        <div className="pt-30 lg:pt-80 flex items-center justify-center">
+        <div className="pt-30 lg:pt-60 flex items-center justify-center">
           <Button variant="ghost" asChild>
             <Link href="/register">
             Cadastrar-se

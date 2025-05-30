@@ -17,7 +17,7 @@ export function LoginForm() {
 
     const formSchema = z.object({
         name: z.string().min(5, "Este campo precisa ter no mínimo 5 caracteres...").max(20, "Este campo não pode ter mais que 20 caracteres..."),
-        position: z.string().optional(),
+        position: z.string({required_error: "Por favor, selecione o cargo..."}),
         password: z.string().min(8, "A sua senha precisa ter no mínimo 8 caracteres...").max(16, "A senha pode ter no máximo 16 caracteres..."),
     })
 
@@ -31,22 +31,32 @@ export function LoginForm() {
         }
     })
 
-    const onSubmit = (value: FormDataSchema) => {
-        setIsLoading(true);
-         axios.post("https://endpointDaAPI", value)
-         .then((response) => {
-            console.log("Resposta da API", response.data);
-            setTimeout(() => {
-                route.push("/orders")
-            }, 2000);
-         }).catch((error) => {
-            console.log("Erro na API", error)
-            setTimeout(() => {
-                route.refresh();   
-            }, 2000)
-         })
-         setIsLoading(false); 
+        const onSubmit = async (value: FormDataSchema) => {
+    setIsLoading(true);
+    try {
+        const response = await axios.post("https://endpointDaAPI", value);
+        const { position } = response.data;
+
+        console.log("Resposta da API", response.data);
+
+        setTimeout(() => {
+        if (position === "Gerente") {
+            route.push("/dashboard/gerente");
+        } else if (position === "Supervisor") {
+            route.push("/dashboard/supervisor");
+        } else {
+            route.push("/dashboard/funcionario");
+        }
+        }, 2000);
+    } catch (error) {
+        console.log("Erro na API", error);
+        setTimeout(() => {
+        route.refresh();
+        }, 2000);
+    } finally {
+        setIsLoading(false);
     }
+    };
 
     return (
         <div>

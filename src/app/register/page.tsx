@@ -15,7 +15,7 @@ export default function Register() {
                         <RegisterForm />
                     </CardContent>
             </Card>
-            <div className="pt-10 lg:pt-56 flex items-center justify-center">
+            <div className="pt-10 lg:pt-32 flex items-center justify-center">
           <Button variant="ghost" asChild>
             <Link href="/">
             Voltar  

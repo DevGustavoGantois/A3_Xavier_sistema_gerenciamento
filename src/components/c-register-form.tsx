@@ -15,6 +15,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 const formSchema = z
   .object({
@@ -23,6 +24,7 @@ const formSchema = z
       .string()
       .min(12, "O email precisa ter no mínimo 12 caracteres...")
       .email("E-mail inválido"),
+      position: z.string().optional(),
     phone: z.string().min(10, "O telefone precisa ter no mínimo 10 dígitos..."),
     cpf: z.string().min(11, "O CPF precisa ter 11 dígitos..."),
     password: z.string().min(8, "A senha precisa ter no mínimo 8 caracteres..."),
@@ -128,6 +130,23 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
+        <FormField name="position" control={form.control} render={({field}) => (
+          <FormItem>
+            <FormLabel>Cargo</FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecione seu cargo" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent className="w-full">
+                <SelectItem value="Funcionário">Funcionário</SelectItem>
+                <SelectItem value="Supervisor">Supervisor</SelectItem>
+                <SelectItem value="Gerente">Gerente</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormItem>
+        )} />
         <FormField
           name="password"
           control={form.control}

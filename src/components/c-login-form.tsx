@@ -8,6 +8,7 @@ import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 export function LoginForm() {
 
@@ -16,6 +17,7 @@ export function LoginForm() {
 
     const formSchema = z.object({
         name: z.string().min(5, "Este campo precisa ter no mínimo 5 caracteres...").max(20, "Este campo não pode ter mais que 20 caracteres..."),
+        position: z.string().optional(),
         password: z.string().min(8, "A sua senha precisa ter no mínimo 8 caracteres...").max(16, "A senha pode ter no máximo 16 caracteres..."),
     })
 
@@ -63,6 +65,23 @@ export function LoginForm() {
                             <FormMessage />
                         </FormItem>
                     )} />
+                    <FormField name="position" control={form.control} render={({field}) => (
+                              <FormItem>
+                                <FormLabel>Cargo</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                  <FormControl>
+                                    <SelectTrigger className="w-full">
+                                      <SelectValue placeholder="Selecione seu cargo" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent className="w-full">
+                                    <SelectItem value="Funcionário">Funcionário</SelectItem>
+                                    <SelectItem value="Supervisor">Supervisor</SelectItem>
+                                    <SelectItem value="Gerente">Gerente</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </FormItem>
+                            )} />
                     <FormField name="password" control={form.control} render={({field}) => (
                         <FormItem className="flex flex-col gap-3 mt-3">
                             <FormLabel>Senha</FormLabel>

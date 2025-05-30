@@ -1,5 +1,7 @@
 import { Navbar } from "@/components/c-navbar";
 import { useEffect, useState } from "react";
+import { EmployeeDashboard } from "./employees/page";
+import ManagerDashboard from "./reports/page";
 
 export default function Page() {
 
@@ -16,7 +18,6 @@ export default function Page() {
         <>
         <Navbar />
         {role === "funcionário" && <EmployeeDashboard />}
-      {role === "supervisor" && <SupervisorDashboard />}
       {role === "gerente" && <ManagerDashboard />}
       {!role && (
         <p className="text-center p-4 text-gray-500">Carregando informações do usuário...</p>

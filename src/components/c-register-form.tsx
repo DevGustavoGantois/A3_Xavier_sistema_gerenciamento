@@ -56,11 +56,11 @@ export function RegisterForm() {
   const onSubmit = (values: FormDataSchema) => {
     setIsLoading(true);
     axios
-      .post("https://endpointRegistro", values)
+      .post("http://localhost:8000/register", values)
       .then((response) => {
         console.log("Resposta da API:", response.data);
         setTimeout(() => {
-          router.push("/login");
+          router.push("/");
         }, 2000);
       })
       .catch((error) => {

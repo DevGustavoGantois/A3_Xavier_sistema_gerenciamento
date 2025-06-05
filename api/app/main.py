@@ -1,9 +1,10 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from typing import Optional
 
 app = FastAPI()
 
@@ -59,6 +60,12 @@ class CreateTaskRequest(BaseModel):
     employee: str
     status: str
 
+class TaskFilterRequest(BaseModel):
+    name: Optional[str] = None
+    supervisor: Optional[str] = None
+    employee: Optional[str] = None
+    status: Optional[str] = None
+
 
 def get_db():
     db = SessionLocal()
@@ -66,6 +73,8 @@ def get_db():
         yield db
     finally:
         db.close()
+
+logged_users = {}
 
 @app.get("/")
 def read_root():
@@ -75,6 +84,7 @@ def read_root():
 def login(request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter_by(name=request.name, position=request.position, password=request.password).first()
     if user:
+        logged_users["current"] = user.name
         return {"position": user.position}
     else:
         raise HTTPException(status_code=401, detail="Credenciais Inválidas")
@@ -112,15 +122,42 @@ def get_tasks(db: Session = Depends(get_db)):
         for task in tasks
     ]
 
-@app.get("/task/get/{id}")
-def get_task(id: int, db: Session = Depends(get_db)):
-    task = db.query(Task).filter_by(id=id).first()
-    if not task:
-        raise HTTPException(status_code=404, detail="Tarefa não encontrada")
-    return {
+@app.post("/task/filter")
+def get_tasks(filters: TaskFilterRequest = Body(default={}), db: Session = Depends(get_db)):
+    query = db.query(Task)
+    if filters.supervisor:
+        query = query.filter(Task.supervisor == filters.supervisor)
+    if filters.employee:
+        query = query.filter(Task.employee == filters.employee)
+    if filters.status:
+        query = query.filter(Task.status == filters.status)
+    if filters.name:
+        query = query.filter(Task.name == filters.name)
+    tasks = query.all()
+    return [
+        {
             "id": task.id,
             "name": task.name,
             "supervisor": task.supervisor,
             "employee": task.employee,
             "status": task.status
+        }
+        for task in tasks
+    ]
+    
+@app.get("/user")
+def get_user(db: Session = Depends(get_db)):
+    name = logged_users.get("current")
+    if not name:
+        raise HTTPException(status_code=401, detail="Nenhum usuário logado")
+    user = db.query(User).filter_by(name=name).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    return {
+        "id": user.id,
+        "name": user.name,
+        "position": user.position,
+        "cpf": user.cpf,
+        "email": user.email,
+        "phone": user.phone
     }

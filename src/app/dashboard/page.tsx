@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import ManagerDashboard from "./reports/page";
 import EmployeeDashboard from "./employees/page";

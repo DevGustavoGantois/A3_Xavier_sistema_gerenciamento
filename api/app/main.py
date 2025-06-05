@@ -100,5 +100,27 @@ def create_task(request: CreateTaskRequest, db: Session = Depends(get_db)):
 
 @app.get("/task/get")
 def get_tasks(db: Session = Depends(get_db)):
-    tasks = db.query(Task)
-    return {tasks}
+    tasks = db.query(Task).all()
+    return [
+        {
+            "id": task.id,
+            "name": task.name,
+            "supervisor": task.supervisor,
+            "employee": task.employee,
+            "status": task.status
+        }
+        for task in tasks
+    ]
+
+@app.get("/task/get/{id}")
+def get_task(id: int, db: Session = Depends(get_db)):
+    task = db.query(Task).filter_by(id=id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Tarefa não encontrada")
+    return {
+            "id": task.id,
+            "name": task.name,
+            "supervisor": task.supervisor,
+            "employee": task.employee,
+            "status": task.status
+    }

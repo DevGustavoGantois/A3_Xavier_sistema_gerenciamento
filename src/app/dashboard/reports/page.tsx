@@ -19,7 +19,8 @@ import { useEffect, useState } from "react";
 
 interface Task {
   id: number;
-  title: string;
+  name: string;
+  supervisor: string;
   employee: string;
   status: string;
 }
@@ -30,7 +31,7 @@ export default function ManagerDashboard() {
   useEffect(() => {
     async function fetchTasks() {
       try {
-        const response = await axios.get<Task[]>("http://localhost:8000/task");
+        const response = await axios.get<Task[]>("http://localhost:8000/task/get");
         console.log("Resposta da API:", response.data);
         setTasks(response.data);
       } catch (error) {
@@ -56,6 +57,7 @@ export default function ManagerDashboard() {
                 <TableRow>
                   <TableHead>ID</TableHead>
                   <TableHead>Título</TableHead>
+                  <TableHead>Supervisor</TableHead>
                   <TableHead>Funcionário</TableHead>
                   <TableHead>Status</TableHead>
                 </TableRow>
@@ -65,7 +67,8 @@ export default function ManagerDashboard() {
                   tasks.map((task) => (
                     <TableRow key={task.id}>
                       <TableCell>{task.id}</TableCell>
-                      <TableCell>{task.title}</TableCell>
+                      <TableCell>{task.name}</TableCell>
+                      <TableCell>{task.supervisor}</TableCell>
                       <TableCell>{task.employee}</TableCell>
                       <TableCell>{task.status}</TableCell>
                     </TableRow>

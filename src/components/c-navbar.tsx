@@ -35,7 +35,7 @@ export function Navbar() {
   else if (user?.role === "funcionario") roleLinks = employeeLinks;
 
   return (
-    <nav className="bg-white border-b shadow px-4 py-2 flex justify-between items-center">
+    <nav className="border-b shadow px-4 py-2 flex justify-between items-center">
       <span className="text-lg font-semibold">Dashboard</span>
 
       <div className="flex gap-4">

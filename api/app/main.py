@@ -30,6 +30,14 @@ class User(Base):
     email = Column(String, unique=True)
     phone = Column(String)
 
+class Task(Base):
+    __tablename__ = "tasks"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    supervisor = Column(String)
+    employee = Column(String)
+    status = Column(String)
+
 Base.metadata.create_all(bind=engine)
 
 class LoginRequest(BaseModel):
@@ -44,6 +52,13 @@ class RegisterRequest(BaseModel):
     cpf: str
     email: str
     phone: str
+
+class CreateTaskRequest(BaseModel):
+    name: str
+    supervisor: str
+    employee: str
+    status: str
+
 
 def get_db():
     db = SessionLocal()
@@ -60,7 +75,7 @@ def read_root():
 def login(request: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter_by(name=request.name, position=request.position, password=request.password).first()
     if user:
-        return {"message": "Login realizado com sucesso!"}
+        return {"position": user.position}
     else:
         raise HTTPException(status_code=401, detail="Credenciais Inválidas")
     
@@ -74,3 +89,16 @@ def register(request: RegisterRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return {"message": f"Usuário {request.name} cadastrado com sucesso!"}
+
+@app.post("/task/create")
+def create_task(request: CreateTaskRequest, db: Session = Depends(get_db)):
+    new_task = Task(name=request.name, supervisor=request.supervisor, employee=request.employee, status=request.status)
+    db.add(new_task)
+    db.commit()
+    db.refresh(new_task)
+    return {"message": "Tarefa criada com sucesso!"}
+
+@app.get("/task/get")
+def get_tasks(db: Session = Depends(get_db)):
+    tasks = db.query(Task)
+    return {tasks}

@@ -41,11 +41,11 @@ export function LoginForm() {
 
         setTimeout(() => {
         if (position === "Gerente") {
-            route.push("/dashboard/manager");
+            route.push("/dashboard/reports");
         } else if (position === "Supervisor") {
             route.push("/dashboard/supervisor");
         } else {
-            route.push("/dashboard/employee");
+            route.push("/dashboard/employees");
         }
         }, 2000);
     } catch (error) {

@@ -37,7 +37,7 @@ export function Navbar() {
   return (
     <nav className="border-b shadow px-4 py-2 flex justify-between items-center">
       <div className="text-lg font-semibold">
-        <Link href="/">Dashboard</Link>
+        <Link href="/dashboard">Dashboard</Link>
       </div>
 
       <div className="flex gap-4">

@@ -27,17 +27,34 @@ import {
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface DialogTaskProps {
   open: boolean;
-  name: string;
-  employee: string;
   setOpen: (open: boolean) => void;
   supervisor: string;
+  onTaskCreated: () => void;
 }
 
-export function DialogTask({ open, setOpen, supervisor, name, employee }: DialogTaskProps) {
+interface Employee {
+  id: number,
+  name: string,
+  email: string,
+  cpf: string,
+  position: string
+}
+
+export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogTaskProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+
+  useEffect(() => {
+    if (open) {
+      axios.get<Employee[]>("http://localhost:8000/employee/get")
+        .then((res) => setEmployees(res.data))
+        .catch((err) => setEmployees([]));
+    }
+  }, [open])
 
   const formSchema = z.object({
     name: z.string().min(5, "Este campo precisa ter no mínimo 5 caracteres..."),
@@ -58,6 +75,8 @@ export function DialogTask({ open, setOpen, supervisor, name, employee }: Dialog
     },
   });
 
+  const router = useRouter();
+
   useEffect(() => {
     form.setValue("supervisor", supervisor);
   }, [supervisor, form]);
@@ -70,6 +89,7 @@ export function DialogTask({ open, setOpen, supervisor, name, employee }: Dialog
         console.log("Chamando a API:", response.data);
         setOpen(false); 
         form.reset(); 
+        onTaskCreated();
       })
       .catch((error) => {
         console.log("Erro ao chamar a API:", error);
@@ -125,11 +145,15 @@ export function DialogTask({ open, setOpen, supervisor, name, employee }: Dialog
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl className="w-full">
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecione um status" />
+                        <SelectValue placeholder="Selecione um funcionário" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                        <SelectItem value={name}>{employee}</SelectItem>
+                        {employees.map((emp) => (
+                          <SelectItem key={emp.id} value={emp.name}>
+                            {emp.name}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

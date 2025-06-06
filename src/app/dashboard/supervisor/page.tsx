@@ -36,25 +36,14 @@ interface User {
   position: string;
 }
 
+
+
 export default function SupervisorDashboard() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const response = await axios.get<User>("http://localhost:8000/user");
-        setUser(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-      }
-    }
-    fetchUser();
-  }, [])
-
-  useEffect(() => {
-    async function fetchTasks() {
+  async function fetchTasks() {
       try {
         const userName = user?.name;
         const response = await axios.post<Task[]>(
@@ -68,7 +57,23 @@ export default function SupervisorDashboard() {
       }
     }
 
-      fetchTasks();
+  async function fetchUser() {
+      try {
+        const response = await axios.get<User>("http://localhost:8000/user");
+        setUser(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+      }
+    }
+
+  useEffect(() => {
+    
+    fetchUser();
+  }, [])
+
+  useEffect(() => {
+    
+    fetchTasks();
 
   }, [user]);
 
@@ -118,7 +123,7 @@ export default function SupervisorDashboard() {
           </CardContent>
         </Card>
       </div>
-      <DialogTask open={dialog} setOpen={setDialog} supervisor={user?.name ?? ""} name={user?.name ?? ""} employee={user?.name ?? ""}/>
+      <DialogTask open={dialog} setOpen={setDialog} supervisor={user?.name ?? ""} onTaskCreated={fetchTasks}/>
     </OnlyFor>
   );
 }

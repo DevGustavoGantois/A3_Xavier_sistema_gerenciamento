@@ -56,6 +56,7 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
     },
   });
 
+  // Atualiza o valor do supervisor quando o componente é aberto
   useEffect(() => {
     form.setValue("supervisor", supervisor);
   }, [supervisor, form]);
@@ -66,8 +67,8 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
       .post("http://localhost:8000/task/create", value)
       .then((response) => {
         console.log("Chamando a API:", response.data);
-        setOpen(false); 
-        form.reset(); 
+        setOpen(false); // fecha o modal após o sucesso
+        form.reset(); // reseta o formulário
       })
       .catch((error) => {
         console.log("Erro ao chamar a API:", error);
@@ -85,6 +86,7 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+            {/* Campo oculto para supervisor */}
             <FormField
               name="supervisor"
               control={form.control}

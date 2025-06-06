@@ -118,7 +118,7 @@ export default function SupervisorDashboard() {
           </CardContent>
         </Card>
       </div>
-      <DialogTask open={dialog} setOpen={setDialog} supervisor={user?.name ?? ""}/>
+      <DialogTask open={dialog} setOpen={setDialog} supervisor={user?.name ?? ""} name={user?.name ?? ""} employee={user?.name ?? ""}/>
     </OnlyFor>
   );
 }

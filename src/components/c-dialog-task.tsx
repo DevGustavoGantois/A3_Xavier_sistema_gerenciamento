@@ -30,11 +30,13 @@ import { useEffect, useState } from "react";
 
 interface DialogTaskProps {
   open: boolean;
+  name: string;
+  employee: string;
   setOpen: (open: boolean) => void;
   supervisor: string;
 }
 
-export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
+export function DialogTask({ open, setOpen, supervisor, name, employee }: DialogTaskProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
@@ -49,7 +51,7 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
   const form = useForm<FormDataSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: name ?? "",
       employee: "",
       status: "",
       supervisor: supervisor ?? "",
@@ -85,7 +87,6 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            {/* Campo oculto para supervisor */}
             <FormField
               name="supervisor"
               control={form.control}
@@ -98,7 +99,6 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
                 </FormItem>
               )}
             />
-
             <FormField
               name="name"
               control={form.control}
@@ -116,20 +116,22 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
                 </FormItem>
               )}
             />
-
             <FormField
               name="employee"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nome do funcionário</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Digite o nome do funcionário..."
-                      {...field}
-                    />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl className="w-full">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione um status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                        <SelectItem value={name}>{employee}</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

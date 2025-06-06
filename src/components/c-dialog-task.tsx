@@ -51,7 +51,7 @@ export function DialogTask({ open, setOpen }: DialogTaskProps) {
   });
 
   function onSubmit(value: FormDataSchema) {
-    axios.post("http://localhost:8000/", value)
+    axios.post("http://localhost:8000/task/create", value)
     .then((response) => {
         console.log("Chamando a API:", response.data)
     })

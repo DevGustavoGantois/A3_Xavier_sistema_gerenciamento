@@ -122,6 +122,20 @@ def get_tasks(db: Session = Depends(get_db)):
         for task in tasks
     ]
 
+@app.get("/employee/get")
+def get_employees(db: Session = Depends(get_db)):
+    employess = db.query(User).filter_by(position="Funcionário").all()
+    return [
+        {
+            "id": employee.id,
+            "name": employee.name,
+            "email": employee.email,
+            "cpf": employee.cpf,
+            "position": employee.position
+        }
+        for employee in employess
+    ]
+
 @app.post("/task/filter")
 def get_tasks(filters: TaskFilterRequest = Body(default={}), db: Session = Depends(get_db)):
     query = db.query(Task)

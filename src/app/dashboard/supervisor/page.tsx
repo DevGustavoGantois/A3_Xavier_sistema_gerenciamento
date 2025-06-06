@@ -51,7 +51,7 @@ export default function SupervisorDashboard() {
       }
     }
     fetchUser();
-  })
+  }, [])
 
   useEffect(() => {
     async function fetchTasks() {

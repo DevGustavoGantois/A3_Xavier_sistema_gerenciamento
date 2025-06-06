@@ -75,6 +75,7 @@ export default function SupervisorDashboard() {
     
     fetchTasks();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const [dialog, setDialog] = useState(false);

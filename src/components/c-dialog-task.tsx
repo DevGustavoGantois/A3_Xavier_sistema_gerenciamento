@@ -27,7 +27,7 @@ import {
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+
 
 interface DialogTaskProps {
   open: boolean;
@@ -52,6 +52,7 @@ export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogT
     if (open) {
       axios.get<Employee[]>("http://localhost:8000/employee/get")
         .then((res) => setEmployees(res.data))
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .catch((err) => setEmployees([]));
     }
   }, [open])
@@ -75,7 +76,6 @@ export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogT
     },
   });
 
-  const router = useRouter();
 
   useEffect(() => {
     form.setValue("supervisor", supervisor);

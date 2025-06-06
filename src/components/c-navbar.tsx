@@ -36,7 +36,9 @@ export function Navbar() {
 
   return (
     <nav className="border-b shadow px-4 py-2 flex justify-between items-center">
-      <span className="text-lg font-semibold">Dashboard</span>
+      <div className="text-lg font-semibold">
+        <Link href="/">Dashboard</Link>
+      </div>
 
       <div className="flex gap-4">
         {[...commonLinks, ...roleLinks].map((link) => (

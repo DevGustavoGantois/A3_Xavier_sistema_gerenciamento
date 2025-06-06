@@ -118,7 +118,7 @@ export default function SupervisorDashboard() {
           </CardContent>
         </Card>
       </div>
-      <DialogTask open={dialog} setOpen={setDialog} supervisor="minha pika"/>
+      <DialogTask open={dialog} setOpen={setDialog} supervisor={user?.name ?? ""}/>
     </OnlyFor>
   );
 }

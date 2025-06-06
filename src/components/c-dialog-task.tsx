@@ -39,7 +39,7 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
 
   const formSchema = z.object({
     name: z.string().min(5, "Este campo precisa ter no mínimo 5 caracteres..."),
-    supervisor: z.string(),
+    supervisor: z.string().min(1, "Supervisor obrigatório"),
     employee: z.string().optional(),
     status: z.string().optional(),
   });
@@ -52,7 +52,7 @@ export function DialogTask({ open, setOpen, supervisor }: DialogTaskProps) {
       name: "",
       employee: "",
       status: "",
-      supervisor: supervisor,
+      supervisor: supervisor ?? "",
     },
   });
 

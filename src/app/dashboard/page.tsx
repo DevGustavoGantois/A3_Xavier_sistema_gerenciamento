@@ -6,6 +6,7 @@ import EmployeeDashboard from "./employees/page";
 export default function Page() {
 
     const [role, setRole] = useState("");
+    
 
     useEffect(() => {
         const userRole = localStorage.getItem("userRole");

@@ -109,12 +109,9 @@ export function DialogEditTask({
           <DialogTitle>Editar Tarefa</DialogTitle>
           <DialogDescription>Altere os campos desejados.</DialogDescription>
         </DialogHeader>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            {/* Campo oculto para supervisor */}
-            <input type="hidden" {...form.register("supervisor")} />
-
+            <Input type="hidden" {...form.register("supervisor")} />
             <FormField
               name="name"
               control={form.control}

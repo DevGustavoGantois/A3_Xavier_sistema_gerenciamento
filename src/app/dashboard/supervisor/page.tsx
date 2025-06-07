@@ -4,12 +4,13 @@ import { DialogEditTask } from "@/components/c-dialog-edit-task";
 import { DialogTask } from "@/components/c-dialog-task";
 import OnlyFor from "@/components/OnlyFor";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -19,6 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import axios from "axios";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface Task {
@@ -39,6 +41,10 @@ interface User {
 }
 
 export default function SupervisorDashboard() {
+  const statusFilter = ["concluidas", "pendentes"];
+  const [employees, setEmployees] = useState<User[]>([]);
+  const [selectedEmployee, setSelectedEmployee] = useState<User | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [editTask, setEditTask] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -54,14 +60,18 @@ export default function SupervisorDashboard() {
     }
   }
 
-  async function fetchTasks() {
+  async function fetchTasks(status?: string, employee?: string) {
     try {
       if (!user?.name) return;
+
       const response = await axios.post<Task[]>(
         "http://localhost:8000/task/filter",
-        { supervisor: user.name }
+        {
+          supervisor: user.name,
+          ...(status && { status }),
+          ...(employee && { employee }),
+        }
       );
-      console.log("Resposta da API:", response.data);
       setTasks(response.data);
     } catch (error) {
       console.error("Erro ao buscar tarefas:", error);
@@ -70,13 +80,23 @@ export default function SupervisorDashboard() {
 
   useEffect(() => {
     fetchUser();
+    fetchEmployees();
   }, []);
 
   useEffect(() => {
     if (user?.name) {
-      fetchTasks();
+      fetchTasks(selectedFilter ?? undefined, selectedEmployee?.name);
     }
-  }, [user]);
+  }, [user, selectedFilter, selectedEmployee]);
+
+  async function fetchEmployees() {
+    try {
+      const response = await axios.get<User[]>("http://localhost:8000/employees");
+      setEmployees(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar os funcionários:", error);
+    }
+  }
 
   return (
     <OnlyFor roleAllowed={["gerente"]}>
@@ -93,6 +113,42 @@ export default function SupervisorDashboard() {
           </Button>
         </div>
 
+        <div className="pl-0 lg:pl-4 flex flex-col lg:flex-row justify-center lg:justify-start">
+          <div className="flex items-center gap-6">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2">
+                {selectedFilter ? `Tarefas ${selectedFilter}` : "Status"}
+                <ChevronDown className="text-white" size={16} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {statusFilter.map((status, index) => (
+                  <DropdownMenuItem
+                    key={index}
+                    onClick={() => setSelectedFilter(status)}
+                  >
+                    {status}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2">
+                {selectedEmployee?.name ?? "Funcionários"}
+                <ChevronDown className="text-white" size={16} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {employees.map((employee) => (
+                  <DropdownMenuItem
+                    key={employee.id}
+                    onClick={() => setSelectedEmployee(employee)}
+                  >
+                    {employee.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
         <Card>
           <CardHeader>
             <CardTitle>Tarefas Cadastradas por {user?.name}</CardTitle>
@@ -141,13 +197,17 @@ export default function SupervisorDashboard() {
         setOpen={setEditTask}
         supervisor={user?.name ?? ""}
         task={selectedTask}
-        editTaskCreated={fetchTasks}
+        editTaskCreated={() =>
+          fetchTasks(selectedFilter ?? undefined, selectedEmployee?.name)
+        }
       />
       <DialogTask
         open={dialog}
         setOpen={setDialog}
         supervisor={user?.name ?? ""}
-        onTaskCreated={fetchTasks}
+        onTaskCreated={() =>
+          fetchTasks(selectedFilter ?? undefined, selectedEmployee?.name)
+        }
       />
     </OnlyFor>
   );

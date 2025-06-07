@@ -260,3 +260,21 @@ def get_notifications(user_id: int, db: Session = Depends(get_db)):
         ]
     else:
         return []
+    
+@app.get("/task/finish/{task_id}")
+def finish_task(task_id: int, db: Session = Depends(get_db)):
+
+    task = db.query(Task).filter_by(id=task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Tarefa não encontrada")
+    task.status = "Concluído"
+    db.commit()
+    db.refresh()
+    notification = Notification(
+        user=task.employee,
+        description=f"{task.name} foi finalizada"
+    )
+    db.add(notification)
+    db.commit()
+    db.refresh(notification)
+    return "Tarefa foi finalizada e notificação enviada"

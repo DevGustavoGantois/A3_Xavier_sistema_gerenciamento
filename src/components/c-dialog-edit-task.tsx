@@ -133,11 +133,11 @@ export function DialogEditTask({
                   <FormLabel>Funcionário</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Selecione um funcionário" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="w-full">
                       {employees.map((emp) => (
                         <SelectItem key={emp.id} value={emp.name}>
                           {emp.name}
@@ -157,11 +157,11 @@ export function DialogEditTask({
                   <FormLabel>Status</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Selecione um status" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="w-full">
                       <SelectItem value="concluido">Concluído</SelectItem>
                       <SelectItem value="pendente">Pendente</SelectItem>
                     </SelectContent>
@@ -170,7 +170,7 @@ export function DialogEditTask({
               )}
             />
 
-            <Button type="submit" className="w-full mt-4">
+            <Button type="submit" className="w-full mt-4 cursor-pointer">
               {isLoading ? "Salvando..." : "Salvar alterações"}
             </Button>
           </form>

@@ -92,7 +92,7 @@ export function DialogEditTask({
   function onSubmit(values: FormDataEditSchema) {
     setIsLoading(true);
     axios
-      .put(`http://localhost:8000/task/update/${task?.id}`, values)
+      .post(`http://localhost:8000/task/update/${task?.id}`, values)
       .then(() => {
         setOpen(false);
         form.reset();
@@ -162,8 +162,8 @@ export function DialogEditTask({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="w-full">
-                      <SelectItem value="concluido">Concluído</SelectItem>
-                      <SelectItem value="pendente">Pendente</SelectItem>
+                      <SelectItem value="Concluído">Concluído</SelectItem>
+                      <SelectItem value="Pendente">Pendente</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>

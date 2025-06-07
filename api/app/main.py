@@ -60,7 +60,6 @@ class CreateTaskRequest(BaseModel):
     status: str
 
 class UpdateTaskRequest(BaseModel):
-    id: int
     name: str
     supervisor: str
     employee: str

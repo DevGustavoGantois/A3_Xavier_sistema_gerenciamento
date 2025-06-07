@@ -40,18 +40,7 @@ export function Navbar() {
         <Link href="/dashboard">Dashboard</Link>
       </div>
 
-      <div className="flex gap-4">
-        {[...commonLinks, ...roleLinks].map((link) => (
-          <Link key={link.href} href={link.href}>
-            <Button
-              variant={pathname === link.href ? "default" : "ghost"}
-              className={cn("text-sm")}
-            >
-              {link.label}
-            </Button>
-          </Link>
-        ))}
-      </div>
+      
     </nav>
   );
 }

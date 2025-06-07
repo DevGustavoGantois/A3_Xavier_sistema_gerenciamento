@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function EmployeeDashboard() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 p-6">
       <Card>
         <CardHeader>
-          <CardTitle>Pedidos atribuídos</CardTitle>
+          <CardTitle>Tarefas atribuídas</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2">
@@ -25,16 +25,6 @@ export default function EmployeeDashboard() {
               <Badge variant="destructive">Cancelado</Badge>
             </li>
           </ul>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Turno de Trabalho</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Entrada: 08:00</p>
-          <p>Saída: 17:00</p>
         </CardContent>
       </Card>
 

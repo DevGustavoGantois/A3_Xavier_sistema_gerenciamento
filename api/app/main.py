@@ -114,9 +114,9 @@ def create_task(request: CreateTaskRequest, db: Session = Depends(get_db)):
     db.refresh(new_task)
     return {"message": "Tarefa criada com sucesso!"}
 
-@app.post("/task/update")
-def update_task(request: UpdateTaskRequest, db: Session = Depends(get_db)):
-    task = db.query(Task).filter_by(id=request.id).first()
+@app.post("/task/update/{task_id}")
+def update_task(task_id: int, request: UpdateTaskRequest, db: Session = Depends(get_db)):
+    task = db.query(Task).filter_by(id=task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Tarefa não encontrada")
     task.name = request.name

@@ -12,7 +12,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,35 +26,33 @@ import {
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Employee } from "./c-dialog-task";
 
+interface Task {
+  id: number;
+  name: string;
+  employee: string;
+  status: string;
+  supervisor: string;
+}
 
-interface DialogTaskProps {
+interface DialogEditTaskProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   supervisor: string;
-  onTaskCreated: () => void;
+  task: Task | null; 
+  editTaskCreated: () => void;
 }
 
-export interface Employee {
-  id: number,
-  name: string,
-  email: string,
-  cpf: string,
-  position: string
-}
-
-export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogTaskProps) {
+export function DialogEditTask({
+  open,
+  setOpen,
+  supervisor,
+  task,
+  editTaskCreated,
+}: DialogEditTaskProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
-
-  useEffect(() => {
-    if (open) {
-      axios.get<Employee[]>("http://localhost:8000/employee/get")
-        .then((res) => setEmployees(res.data))
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .catch((err) => setEmployees([]));
-    }
-  }, [open])
 
   const formSchema = z.object({
     name: z.string().min(5, "Este campo precisa ter no mínimo 5 caracteres..."),
@@ -64,36 +61,44 @@ export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogT
     status: z.string().optional(),
   });
 
-  type FormDataSchema = z.infer<typeof formSchema>;
+  type FormDataEditSchema = z.infer<typeof formSchema>;
 
-  const form = useForm<FormDataSchema>({
+  const form = useForm<FormDataEditSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: name ?? "",
+      name: "",
       employee: "",
       status: "",
       supervisor: supervisor ?? "",
     },
   });
 
-
   useEffect(() => {
-    form.setValue("supervisor", supervisor);
-  }, [supervisor, form]);
+    if (open) {
+      axios
+        .get("http://localhost:8000/employee/get")
+        .then((res) => setEmployees(res.data))
+        .catch(() => setEmployees([]));
 
-  function onSubmit(value: FormDataSchema) {
+      if (task) {
+        form.setValue("name", task.name);
+        form.setValue("employee", task.employee);
+        form.setValue("status", task.status);
+        form.setValue("supervisor", task.supervisor);
+      }
+    }
+  }, [open, task, form, supervisor]);
+
+  function onSubmit(values: FormDataEditSchema) {
     setIsLoading(true);
     axios
-      .post("http://localhost:8000/task/create", value)
-      .then((response) => {
-        console.log("Chamando a API:", response.data);
-        setOpen(false); 
-        form.reset(); 
-        onTaskCreated();
+      .put(`http://localhost:8000/task/update/${task?.id}`, values)
+      .then(() => {
+        setOpen(false);
+        form.reset();
+        editTaskCreated();
       })
-      .catch((error) => {
-        console.log("Erro ao chamar a API:", error);
-      })
+      .catch((error) => console.error("Erro ao atualizar tarefa:", error))
       .finally(() => setIsLoading(false));
   }
 
@@ -101,24 +106,15 @@ export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogT
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Criar Tarefa</DialogTitle>
-          <DialogDescription>Preencha os campos abaixo.</DialogDescription>
+          <DialogTitle>Editar Tarefa</DialogTitle>
+          <DialogDescription>Altere os campos desejados.</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
-            <FormField
-              name="supervisor"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="hidden" className="hidden" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Campo oculto para supervisor */}
+            <input type="hidden" {...form.register("supervisor")} />
+
             <FormField
               name="name"
               control={form.control}
@@ -126,37 +122,32 @@ export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogT
                 <FormItem>
                   <FormLabel>Nome da atividade</FormLabel>
                   <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Digite o nome da tarefa..."
-                      {...field}
-                    />
+                    <Input placeholder="Nome da tarefa" {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               name="employee"
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome do funcionário</FormLabel>
+                  <FormLabel>Funcionário</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl className="w-full">
+                    <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione um funcionário" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                        {employees.map((emp) => (
-                          <SelectItem key={emp.id} value={emp.name}>
-                            {emp.name}
-                          </SelectItem>
-                        ))}
+                      {employees.map((emp) => (
+                        <SelectItem key={emp.id} value={emp.name}>
+                          {emp.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -168,23 +159,22 @@ export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogT
                 <FormItem>
                   <FormLabel>Status</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl className="w-full">
+                    <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione um status" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Concluído">Concluído</SelectItem>
-                      <SelectItem value="Pendente">Pendente</SelectItem>
+                      <SelectItem value="concluido">Concluído</SelectItem>
+                      <SelectItem value="pendente">Pendente</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit" className="w-full mt-4 cursor-pointer">
-              {isLoading ? "Criando tarefa..." : "Criar tarefa"}
+            <Button type="submit" className="w-full mt-4">
+              {isLoading ? "Salvando..." : "Salvar alterações"}
             </Button>
           </form>
         </Form>

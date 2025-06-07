@@ -2,15 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/app/auth/useAuth";
 
 
 export function Navbar() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pathname = usePathname();
   const { user } = useAuth(); 
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const commonLinks = [
     { href: "/dashboard", label: "Início" },
   ];
@@ -32,6 +32,7 @@ export function Navbar() {
 
   if (user?.role === "gerente") roleLinks = managerLinks;
   else if (user?.role === "supervisor") roleLinks = supervisorLinks;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   else if (user?.role === "funcionario") roleLinks = employeeLinks;
 
   return (

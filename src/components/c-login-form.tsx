@@ -16,8 +16,7 @@ export function LoginForm() {
     const route = useRouter();
 
     const formSchema = z.object({
-        name: z.string().min(5, "Este campo precisa ter no mínimo 5 caracteres...").max(20, "Este campo não pode ter mais que 20 caracteres..."),
-        position: z.string({required_error: "Por favor, selecione o cargo..."}),
+        email: z.string().min(8, "Este campo precisa ter no mínimo 8 caracteres...").email("Email inválido"),
         password: z.string().min(8, "A sua senha precisa ter no mínimo 8 caracteres...").max(16, "A senha pode ter no máximo 16 caracteres..."),
     })
 
@@ -26,7 +25,7 @@ export function LoginForm() {
     const form = useForm<FormDataSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
+            email: "",
             password: "",
         }
     })
@@ -62,36 +61,19 @@ export function LoginForm() {
         <div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormField name="name" control={form.control} render={({field}) => (
+                    <FormField name="email" control={form.control} render={({field}) => (
                         <FormItem className="flex flex-col gap-3">
-                            <FormLabel>Nome de usuário</FormLabel>
+                            <FormLabel>E-mail</FormLabel>
                             <FormControl>
                                 <Input
                                 type="text"
-                                placeholder="Digite seu nome de usuário..."
+                                placeholder="Digite seu email..."
                                 {...field} 
                                 />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )} />
-                    <FormField name="position" control={form.control} render={({field}) => (
-                              <FormItem className="mt-4">
-                                <FormLabel>Cargo</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                  <FormControl>
-                                    <SelectTrigger className="w-full">
-                                      <SelectValue placeholder="Selecione seu cargo" />
-                                    </SelectTrigger>
-                                  </FormControl>
-                                  <SelectContent className="w-full">
-                                    <SelectItem value="Funcionário">Funcionário</SelectItem>
-                                    <SelectItem value="Supervisor">Supervisor</SelectItem>
-                                    <SelectItem value="Gerente">Gerente</SelectItem>
-                                  </SelectContent>
-                                </Select>
-                              </FormItem>
-                            )} />
                     <FormField name="password" control={form.control} render={({field}) => (
                         <FormItem className="flex flex-col gap-3 mt-3">
                             <FormLabel>Senha</FormLabel>

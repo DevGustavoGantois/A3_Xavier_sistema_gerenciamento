@@ -42,8 +42,7 @@ class Task(Base):
 Base.metadata.create_all(bind=engine)
 
 class LoginRequest(BaseModel):
-    name: str
-    position: str
+    email: str
     password: str
 
 class RegisterRequest(BaseModel):
@@ -55,6 +54,13 @@ class RegisterRequest(BaseModel):
     phone: str
 
 class CreateTaskRequest(BaseModel):
+    name: str
+    supervisor: str
+    employee: str
+    status: str
+
+class UpdateTaskRequest(BaseModel):
+    id: int
     name: str
     supervisor: str
     employee: str
@@ -82,7 +88,7 @@ def read_root():
 
 @app.post("/login")
 def login(request: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter_by(name=request.name, position=request.position, password=request.password).first()
+    user = db.query(User).filter_by(email=request.email, password=request.password).first()
     if user:
         logged_users["current"] = user.name
         return {"position": user.position}
@@ -107,6 +113,19 @@ def create_task(request: CreateTaskRequest, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_task)
     return {"message": "Tarefa criada com sucesso!"}
+
+@app.post("/task/update")
+def update_task(request: UpdateTaskRequest, db: Session = Depends(get_db)):
+    task = db.query(Task).filter_by(id=request.id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Tarefa não encontrada")
+    task.name = request.name
+    task.supervisor = request.supervisor
+    task.employee = request.employee
+    task.status = request.status
+    db.commit()
+    db.refresh(task)
+    return {"message": "Tarefa atualizada com sucesso!"}
 
 @app.get("/task/get")
 def get_tasks(db: Session = Depends(get_db)):

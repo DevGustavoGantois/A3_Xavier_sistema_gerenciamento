@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button"; 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -45,7 +46,6 @@ export default function EmployeeDashboard() {
       if (user) {
         try {
           const res = await axios.get(`http://localhost:8000/task/employee/${user.id}`);
-          console.log("Chamando os dados da API: ", res.data);
           setIsEmployeeData(res.data);
         } catch (err) {
           console.log("Erro ao chamar a API:", err);
@@ -60,7 +60,6 @@ export default function EmployeeDashboard() {
       if (user) {
         try {
           const res = await axios.get(`http://localhost:8000/notification/${user.id}`);
-          console.log("Chamando a API de notificação:", res.data);
           setNotificationTask(res.data);
         } catch (err) {
           console.log("Erro na API:", err);
@@ -69,6 +68,19 @@ export default function EmployeeDashboard() {
     }
     fetchNotificationData();
   }, [user]);
+
+  async function handleFinishTask(taskId: string) {
+    try {
+      await axios.post(`http://localhost:8000/task/finish/${taskId}`);
+      // Atualiza a lista após concluir
+      if (user) {
+        const updatedTasks = await axios.get(`http://localhost:8000/task/employee/${user.id}`);
+        setIsEmployeeData(updatedTasks.data);
+      }
+    } catch (error) {
+      console.log("Erro ao concluir tarefa:", error);
+    }
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
@@ -82,14 +94,21 @@ export default function EmployeeDashboard() {
               <ul className="space-y-2">
                 <li className="flex justify-between items-center">
                   <span>{task.name}</span>
-                  <Badge variant="outline">{task.status}</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">{task.status}</Badge>
+                    <Button
+                      size="sm"
+                      onClick={() => handleFinishTask(task.id)}
+                    >
+                      Concluir
+                    </Button>
+                  </div>
                 </li>
               </ul>
             </div>
           ))}
         </CardContent>
       </Card>
-
       <Card>
         <CardHeader>
           <CardTitle>Tarefas concluídas</CardTitle>
@@ -107,7 +126,6 @@ export default function EmployeeDashboard() {
           ))}
         </CardContent>
       </Card>
-
       <Card>
         <CardHeader>
           <CardTitle>Notificações</CardTitle>

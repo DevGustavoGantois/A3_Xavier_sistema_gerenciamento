@@ -174,8 +174,8 @@ export function DialogTask({ open, setOpen, supervisor, onTaskCreated }: DialogT
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="concluido">Concluído</SelectItem>
-                      <SelectItem value="pendente">Pendente</SelectItem>
+                      <SelectItem value="Concluído">Concluído</SelectItem>
+                      <SelectItem value="Pendente">Pendente</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

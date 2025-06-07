@@ -34,7 +34,7 @@ export default function EmployeeDashboard() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await axios.get<User>("http://localhost:8000/user");
+        const res = await axios.get<User>("http://localhost:8000/user"); //rota ta errada.
         setUser(res.data);
       } catch (err) {
         console.log("Erro ao buscar usuário:", err);
@@ -47,7 +47,7 @@ export default function EmployeeDashboard() {
     async function fetchDataTasks() {
       if (user) {
         try {
-          const res = await axios.get(`http://localhost:8000/task/${user.name}/${user.id}`);
+          const res = await axios.get(`http://localhost:8000/task/${user.name}/${user.id}`); //rota ta errada.
           console.log("Chamando os dados da API: ", res.data);
           setIsEmployeeData(res.data);
         } catch (err) {

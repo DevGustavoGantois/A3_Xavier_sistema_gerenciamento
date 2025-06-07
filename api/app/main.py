@@ -39,6 +39,13 @@ class Task(Base):
     employee = Column(String)
     status = Column(String)
 
+class Notification(Base):
+    __tablename__ = "notifications"
+    id = Column(Integer, primary_key=True, index=True)
+    description = Column(String)
+    user = Column(String)
+
+
 Base.metadata.create_all(bind=engine)
 
 class LoginRequest(BaseModel):
@@ -70,6 +77,10 @@ class TaskFilterRequest(BaseModel):
     supervisor: Optional[str] = None
     employee: Optional[str] = None
     status: Optional[str] = None
+
+class NotificationRequest(BaseModel):
+    user: str
+    description: str
 
 
 def get_db():
@@ -111,6 +122,10 @@ def create_task(request: CreateTaskRequest, db: Session = Depends(get_db)):
     db.add(new_task)
     db.commit()
     db.refresh(new_task)
+    notification = Notification(user=request.employee, description=f"Tarefa {request.name} atribuida para você")
+    db.add(notification)
+    db.commit()
+    db.refresh(notification)
     return {"message": "Tarefa criada com sucesso!"}
 
 @app.post("/task/update/{task_id}")
@@ -129,6 +144,33 @@ def update_task(task_id: int, request: UpdateTaskRequest, db: Session = Depends(
 @app.get("/task/get")
 def get_tasks(db: Session = Depends(get_db)):
     tasks = db.query(Task).all()
+    return [
+        {
+            "id": task.id,
+            "name": task.name,
+            "supervisor": task.supervisor,
+            "employee": task.employee,
+            "status": task.status
+        }
+        for task in tasks
+    ]
+
+@app.get("/task/{user_position}/{user_id}")
+def get_tasks_filter(user_position: str, user_id: int, db: Session = Depends(get_db)):
+
+    if user_id:
+        user = db.query(User).filter_by(id=user_id).first()
+        user_name = user.name
+    else:
+        raise HTTPException(status_code=404, detail="user_id é obrigatório")
+
+    if user_position == "employee":
+        tasks = db.query(Task).filter_by(employee=user_name).all()
+    elif user_position == "supervisor":
+        tasks = db.query(Task).filter_by(supervisor=user_name).all()
+    else:
+        raise HTTPException(status_code=404, detail="position está errada")
+    
     return [
         {
             "id": task.id,
@@ -193,3 +235,28 @@ def get_user(db: Session = Depends(get_db)):
         "email": user.email,
         "phone": user.phone
     }
+
+@app.post("/notification")
+def create_notification(request: NotificationRequest, db: Session = Depends(get_db)):
+    new_notification = Notification(description=request.description, user=request.user)
+    db.add(new_notification)
+    db.commit()
+    db.refresh(new_notification)
+    return "Notificação criada com sucesso"
+
+@app.get("/notification/{user_id}")
+def get_notifications(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter_by(id=user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    user_name = user.name
+    notifications = db.query(Notification).filter_by(user=user_name).all()
+    if notifications:
+        return [
+            {
+                "description": notification.description
+            }
+            for notification in notifications
+        ]
+    else:
+        return []

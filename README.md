@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧾 Sistema de Ordem e Gerenciamento
 
-## Getting Started
+Este projeto é um sistema completo de ordem e gerenciamento, com **back-end em Python (FastAPI)** e **front-end em Next.js**, oferecendo uma interface moderna, responsiva e intuitiva para diferentes tipos de usuários como funcionários, supervisores e gerentes.
 
-First, run the development server:
+---
 
+## 🚀 Tecnologias Utilizadas
+
+### 🔧 Back-End (API)
+- **[FastAPI](https://fastapi.tiangolo.com/)** – Framework rápido e moderno para APIs com Python
+- **[SQLAlchemy](https://www.sqlalchemy.org/)** – ORM para modelagem e conexão com banco de dados
+- **[Pydantic](https://docs.pydantic.dev/)** – Validação de dados com Python
+- **[Uvicorn](https://www.uvicorn.org/)** – Servidor ASGI leve e de alta performance
+- **[SQLite](https://www.sqlite.org/)** – Banco de dados leve utilizado para ambiente local e desenvolvimento
+
+### 🎨 Front-End (Next.js)
+- **[Next.js](https://nextjs.org/)** – Framework React para aplicações web otimizadas
+- **[shadcn/ui](https://ui.shadcn.com/)** – Componentes UI modernos e personalizáveis
+- **[React Hook Form](https://react-hook-form.com/)** – Gerenciamento de formulários em React
+- **[Zod](https://zod.dev/)** – Validação de schemas no front-end
+- **[Axios](https://axios-http.com/)** – Requisições HTTP
+- **Pages Router** do Next.js para navegação entre páginas
+
+---
+
+## 🗃️ Banco de Dados
+
+O projeto utiliza **SQLite** como banco de dados principal durante o desenvolvimento. A integração é feita via **SQLAlchemy**, o que permite adaptar facilmente para outros bancos como PostgreSQL ou MySQL, caso necessário em produção.
+
+### Estrutura básica:
+- Tabelas de usuários, ordens e perfis (funcionário, supervisor, gerente)
+- Relacionamentos definidos com ORM
+- Migrações podem ser gerenciadas com ferramentas como Alembic (não incluído inicialmente)
+
+---
+
+## 📁 Estrutura do Projeto
+
+.
+├── backend-app/
+│ ├── main.py
+│ ├── models.py
+│ ├── database.py
+│ └── ...
+├── frontend-app/
+│ ├── pages/
+│ ├── components/
+│ ├── public/
+│ └── ...
+└── README.md
+
+
+---
+
+## 📄 Funcionalidades
+
+- Página de Login
+- Página de Cadastro
+- Dashboard principal
+- Página de Funcionários
+- Página de Supervisores
+- Página de Gerentes
+
+---
+
+## 🛠️ Como Instalar o Projeto
+
+### 🔙 Back-End (FastAPI + SQLAlchemy)
+
+1. Acesse a pasta do back-end:
+   ```bash
+   cd backend
+    pip install fastapi sqlalchemy pydantic uvicorn
+    uvicorn main:app --reload
+
+
+### 🔜 Front-End (Next.js)
+
+1. Acesse a pasta do front-end
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+    cd frontend-app
+    npm install
+    npm run build
+    npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🌐 Fluxo da Aplicação
+O sistema foi pensado para atender diferentes tipos de usuários com acesso direcionado e permissões distintas:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Funcionário: Criação e visualização de ordens
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Supervisor: Gerenciamento das ordens e acompanhamento da equipe
 
-## Learn More
+- Gerente: Acesso completo com controle total do sistema e geração de relatórios
 
-To learn more about Next.js, take a look at the following resources:
+📌 Requisitos
+-Node.js v18 ou superior
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Python 3.9 ou superior
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Navegador moderno (Chrome, Firefox, Edge, etc.)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+📄 Licença
+Este projeto está licenciado sob os termos da MIT License.

@@ -14,12 +14,16 @@ Este projeto é um sistema completo de ordem e gerenciamento, com **back-end em 
 - **[SQLite](https://www.sqlite.org/)** – Banco de dados leve utilizado para ambiente local e desenvolvimento
 
 ### 🎨 Front-End (Next.js)
+
 - **[Next.js](https://nextjs.org/)** – Framework React para aplicações web otimizadas
 - **[shadcn/ui](https://ui.shadcn.com/)** – Componentes UI modernos e personalizáveis
+- **[Tailwind CSS](https://tailwindcss.com/)** – Utilitário de classes para estilização rápida e responsiva
 - **[React Hook Form](https://react-hook-form.com/)** – Gerenciamento de formulários em React
-- **[Zod](https://zod.dev/)** – Validação de schemas no front-end
-- **[Axios](https://axios-http.com/)** – Requisições HTTP
-- **Pages Router** do Next.js para navegação entre páginas
+- **[Zod](https://zod.dev/)** – Validação de schemas no front-end integrada ao React Hook Form
+- **[Axios](https://axios-http.com/)** – Cliente HTTP para comunicação com o back-end
+- **Pages Router** do Next.js – Navegação entre páginas baseada em arquivos
+
+
 
 ---
 

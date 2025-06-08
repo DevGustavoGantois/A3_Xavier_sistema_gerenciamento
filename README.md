@@ -87,6 +87,10 @@ O projeto utiliza **SQLite** como banco de dados principal durante o desenvolvim
 ### 🌐 Fluxo da Aplicação
 O sistema foi pensado para atender diferentes tipos de usuários com acesso direcionado e permissões distintas:
 
+- Cadastro: Cadastrar o usuário para ter uma conta para acessar a aplicação
+
+- Login: Logar com o usuário para entrar na aplicação
+
 - Funcionário: Criação e visualização de ordens
 
 - Supervisor: Gerenciamento das ordens e acompanhamento da equipe

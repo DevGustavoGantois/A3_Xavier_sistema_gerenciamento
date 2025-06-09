@@ -33,6 +33,7 @@ export default function ManagerDashboard() {
 
   const fetchReport = async (type: string) => { //As rotas estão erradas:
     let url = "";
+    let filter : {[key: string]: string} = {};
 
     switch (type) {
       case "supervisor":
@@ -40,7 +41,8 @@ export default function ManagerDashboard() {
         setTitle("Tarefas Cadastradas por Supervisores");
         break;
       case "pending":
-        url = "http://localhost:8000/task/pending";
+        url = "http://localhost:8000/task/filter";
+        filter = { status: "Pendente" };
         setTitle("Tarefas Pendentes");
         break;
       case "noPending":
@@ -50,7 +52,13 @@ export default function ManagerDashboard() {
     }
 
     try {
-      const response = await axios.get<Task[]>(url);
+      let response;
+      if (type === "pending") {
+        response = await axios.post<Task[]>(url, filter);
+      } else {
+        response = await axios.get<Task[]>(url);
+      }
+
       if (response.data.length === 0) {
         setTasks([]);
         setMessage("Nenhum dado encontrado para este relatório.");

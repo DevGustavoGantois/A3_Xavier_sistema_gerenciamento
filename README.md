@@ -46,21 +46,7 @@ O sistema foi construído com tecnologias modernas que garantem facilidade de us
 
 ## 📁 Estrutura do Projeto
 
-```
-.
-├── backend-app/
-│   ├── main.py
-│   ├── models.py
-│   ├── database.py
-│   ├── schemas/
-│   └── routers/
-├── frontend-app/
-│   ├── pages/
-│   ├── components/
-│   ├── public/
-│   └── styles/
-└── README.md
-```
+![alt text](image.png)
 
 ---
 

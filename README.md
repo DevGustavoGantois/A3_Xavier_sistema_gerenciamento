@@ -78,7 +78,8 @@ O projeto utiliza **SQLite** como banco de dados principal durante o desenvolvim
    cd frontend-app
    cd api
     pip install fastapi sqlalchemy pydantic uvicorn
-    uvicorn main:app --reload
+    cd app
+    python -m uvicorn main:app --reload
 
 
 ### 🔜 Front-End (Next.js)

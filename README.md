@@ -65,7 +65,7 @@ O sistema foi construído com tecnologias modernas que garantem facilidade de us
 1. Navegue até a pasta do back-end:
 
    ```bash
-   cd backend-app
+   cd api
    ```
 
 2. Crie e ative um ambiente virtual (recomendado):

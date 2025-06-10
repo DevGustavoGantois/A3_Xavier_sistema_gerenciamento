@@ -91,7 +91,7 @@ export default function SupervisorDashboard() {
 
   async function fetchEmployees() {
     try {
-      const response = await axios.get<User[]>("http://localhost:8000/employees");
+      const response = await axios.get<User[]>("http://localhost:8000/employee/get");
       setEmployees(response.data);
     } catch (error) {
       console.error("Erro ao buscar os funcionários:", error);

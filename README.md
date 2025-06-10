@@ -75,7 +75,6 @@ O projeto utiliza **SQLite** como banco de dados principal durante o desenvolvim
 
 1. Acesse a pasta do back-end:
    ```bash
-   cd frontend-app
    cd api
     pip install fastapi sqlalchemy pydantic uvicorn
     cd app
@@ -86,7 +85,6 @@ O projeto utiliza **SQLite** como banco de dados principal durante o desenvolvim
 
 1. Acesse a pasta do front-end
 ```bash
-    cd frontend-app
     npm install
     npm run build
     npm run dev

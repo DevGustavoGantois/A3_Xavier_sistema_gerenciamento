@@ -43,7 +43,7 @@ O projeto utiliza **SQLite** como banco de dados principal durante o desenvolvim
 ## 📁 Estrutura do Projeto
 
 .
-├── backend-app/
+├── api/
 │ ├── main.py
 │ ├── models.py
 │ ├── database.py
@@ -75,7 +75,8 @@ O projeto utiliza **SQLite** como banco de dados principal durante o desenvolvim
 
 1. Acesse a pasta do back-end:
    ```bash
-   cd backend
+   cd frontend-app
+   cd api
     pip install fastapi sqlalchemy pydantic uvicorn
     uvicorn main:app --reload
 

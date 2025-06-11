@@ -41,7 +41,7 @@ interface User {
 }
 
 export default function SupervisorDashboard() {
-  const statusFilter = ["concluidas", "pendentes"];
+  const statusFilter = ["Concluído", "Pendente"];
   const [employees, setEmployees] = useState<User[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<User | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);

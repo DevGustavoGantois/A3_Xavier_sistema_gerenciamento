@@ -71,7 +71,7 @@ export default function EmployeeDashboard() {
 
   async function handleFinishTask(taskId: string) {
     try {
-      await axios.get(`http://localhost:8000/task/finish/${taskId}`);
+      await axios.post(`http://localhost:8000/task/finish/${taskId}`);
       if (user) {
         const updatedTasks = await axios.get(`http://localhost:8000/task/employee/${user.id}`);
         setIsEmployeeData(updatedTasks.data);

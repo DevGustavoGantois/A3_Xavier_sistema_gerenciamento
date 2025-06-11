@@ -93,19 +93,13 @@ O sistema foi construído com tecnologias modernas que garantem facilidade de us
 
 ### 🔜 Front-End (Next.js + TypeScript)
 
-1. Navegue até a pasta do front-end:
-
-   ```bash
-   cd frontend-app
-   ```
-
-2. Instale os pacotes:
+1. Instale os pacotes:
 
    ```bash
    npm install
    ```
 
-3. Compile e execute a aplicação:
+2. Compile e execute a aplicação:
 
    ```bash
    npm run build

@@ -66,6 +66,7 @@ O sistema foi construído com tecnologias modernas que garantem facilidade de us
 
    ```bash
    cd api
+   cd app
    ```
 
 2. Crie e ative um ambiente virtual (recomendado):

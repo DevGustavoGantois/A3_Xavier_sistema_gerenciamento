@@ -60,6 +60,14 @@ O sistema foi construído com tecnologias modernas que garantem facilidade de us
 
 ## 🛠 Como Instalar e Executar o Sistema
 
+### 🔽 Caso tenha baixado o projeto como ZIP
+
+Ao descompactar, será criada uma pasta com nome semelhante a `A3_Xavier_sistema_gerenciamento-main`. Você deve acessá-la antes de iniciar os passos abaixo:
+
+```bash
+cd A3_Xavier_sistema_gerenciamento-main
+```
+
 ### 🔙 Back-End (API FastAPI)
 
 1. Navegue até a pasta do back-end:
@@ -69,13 +77,21 @@ O sistema foi construído com tecnologias modernas que garantem facilidade de us
    cd app
    ```
 
-2. Crie e ative um ambiente virtual (recomendado):
+2. Crie e ative o ambiente virtual (obrigatório):
 
    ```bash
    python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate     # Windows
    ```
+   Ative conforme o sistema operacional:
+      
+      Linux/Mac:
+      ```bash
+      source venv/bin/activate
+      ```
+      Windows:
+      ```bash
+      venv\Scripts\activate
+      ```
 
 3. Instale as dependências:
 
@@ -191,16 +207,15 @@ Utilizamos uma arquitetura baseada em API RESTful com FastAPI (back-end) e Axios
 | Geração de 3 tipos de relatório por gerente                         | ✅      |
 | Comunicação entre cliente e servidor via API                        | ✅      |
 | README com documentação detalhada                                   | ✅      |
-| Vídeo de apresentação (em andamento)                                | 🔜     |
+| Vídeo de apresentação (em andamento)                                | ✅     |
 
 ---
 
 ## 🎥 Vídeo de Apresentação
 
-🔗 Link para o vídeo no YouTube: *(inserir aqui)*
+🔗 Link para o vídeo no YouTube:*(https://youtu.be/APDNC9Fa4hU)*
 
 * Duração: entre 5 e 10 minutos
-* Apresentação feita por: Integrantes da equipe
 * Conteúdo: Demonstração de uso, estrutura, tecnologias e justificativas
 
 ---
